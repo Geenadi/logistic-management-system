@@ -15,6 +15,7 @@ void addCity();
 void renameCity();
 void displayCities();
 void manageDistance();
+void editDistance();
 
 
 int main(){
@@ -254,3 +255,49 @@ void manageDistance(){
     } while(choice != 3);
 }
 
+void editDistance(){
+    int city1, city2, distance;
+
+    if(cityCount < 2){
+        printf("Need at least two citis to add or edit the distance.");
+        return;
+    }
+
+    displayCities();
+
+    prinf("Enter first city number: ");
+    scanf("%d", &city1);
+    prinf("Enter second city number: ");
+    scanf("%d", &city2);
+
+    if (city1 < 1 || city1 > cityCount || city2 < 1 || city2 > cityCount)
+    {
+        printf("Invalid city numbers.\n");
+        return;
+    }
+
+    if (city1 == city2)
+    {
+        printf("Cannot set distance from city to itself.\n");
+        return;
+    }
+
+    city1--;
+    city2--;
+
+    printf("Please enter the distance between the selected cities in km: ");
+    scanf("%d", distance);
+
+    if (distance < 0)
+    {
+        printf("Invalid distance.\n");
+        return;
+    }
+
+    distances[city1][city2] = distance;
+    distances[city2][city1] = distance;
+
+    printf("Distance set successfully.\n");
+
+
+}
