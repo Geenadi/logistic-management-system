@@ -2,10 +2,15 @@
 #include <stdio.h>
 #include <string.h>
 
+#define MAX_CITIES 30
+#define MAX_NAME_LEN 30
+
 int cityCount = 0;
 
+char cities[MAX_CITIES][MAX_NAME_LEN];
 
 void manageCities();
+void addCity();
 
 
 int main(){
@@ -84,4 +89,34 @@ void manageCities(){
                 printf("Invalid Input! Try again...");
         }
     } while(choice != 5);
+}
+
+void addCity(){
+    char newCity[MAX_NAME_LEN];
+    int cityExists = 0;
+
+    if(cityCount >= MAX_CITIES){
+        printf("Unable to add.Maximum city limit has reached.");
+        return;
+    } 
+
+    getchar();
+    printf("Enter a city name: ");
+    scanf("%[^\n]", newCity); 
+
+    for(int i = 0; i < cityCount; i++){
+        if(strcasecmp(cities[i], newCity) == 0) {
+            cityExists = 1;
+            break;
+        }
+    }
+
+    if(cityExists){
+        printf("City already exists.\n");
+        return;
+    } else {
+        strcpy(cities[cityCount], newCity);
+        cityCount++;
+        printf("'%s' successfully added.\n", newCity);
+    }
 }
