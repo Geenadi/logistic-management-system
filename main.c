@@ -4,11 +4,16 @@
 
 #define MAX_CITIES 30
 #define MAX_NAME_LEN 30
+#define INFINITY_VALUE 999999
 
 int cityCount = 0;
+int minDist = 0;
+int pathLen = 0;
 
 char cities[MAX_CITIES][MAX_NAME_LEN];
 int distances[MAX_CITIES][MAX_CITIES];
+int path[MAX_CITIES];
+
 
 char vehicleNames[3][30] = {"Van", "Truck", "Lorry"};
 int vehicleCapacity[3] = {1000, 5000, 10000};
@@ -24,6 +29,7 @@ void editDistance();
 void displayDistanceTable();
 void displayVehicles();
 void handleDeliveryRequest();
+void findShortPath(int souc, int dest);
 
 
 
@@ -397,5 +403,57 @@ void handleDeliveryRequest(){
         return;
     }
 
-    //calcDeliveryCost(souc, dest, weight, vehicleType);
+    // calcDeliveryCost(souc, dest, weight, vehicleType);
 }    
+
+void findShortPath(int souc, int dest){
+    if(distances[souc][dest] > 0){
+        minDist = distances[souc][dest];
+        path[0] = souc;
+        path[1] = dest;
+        pathLen = 2;
+    }else{
+        minDist = INFINITY_VALUE;
+        pathLen = 0;
+    }
+
+    for(int intermediate = 0; intermediate < cityCount; intermediate++){
+        if(intermediate == souc || intermediate == dest){
+            continue;
+        }
+
+        if(distances[souc][intermediate] > 0 && distances[intermediate][dest] > 0){
+            int totalDist = distances[souc][intermediate] + distances[intermediate][dest];
+            if (totalDist < minDist){
+                minDist = totalDist;
+                path[0] = souc;
+                path[1] = intermediate;
+                path[2] = dest;
+                pathLen = 3;
+            }
+        }
+    }
+
+    for (int i = 0; i < cityCount; i++){
+        if (i == souc || i == dest){
+            continue;
+        }
+        for (int j = 0; j < cityCount; j++){
+            if (j == souc || j == dest || j == i){
+                continue;
+            }
+
+            if (distances[souc][i] > 0 && distances[i][j] > 0 && distances[j][dest] > 0){
+                int totalDist = distances[souc][i] + distances[i][j] + distances[j][dest];
+                if (totalDist < minDist){
+                    minDist = totalDist;
+                    path[0] = souc;
+                    path[1] = i;
+                    path[2] = j;
+                    path[3] = dest;
+                    pathLen = 4;
+                }
+            }
+        }
+    }
+}
