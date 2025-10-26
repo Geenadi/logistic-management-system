@@ -2,6 +2,12 @@
 #include <stdio.h>
 #include <string.h>
 
+int cityCount = 0;
+
+
+void manageCities();
+
+
 int main(){
     int choice;
 
@@ -22,7 +28,7 @@ int main(){
 
         switch(choice){
             case 1: 
-            
+                manageCities();
                 break;
             case 2:
                 
@@ -43,4 +49,39 @@ int main(){
  
     return 0;
 
+}
+
+void manageCities(){
+    int choice;
+    do{
+
+        printf("\n--------- City Management ---------\n");
+        printf("1. Add a new city\n");
+        printf("2. Rename a city\n");
+        printf("3. Remove a city\n");
+        printf("4. Display all cities\n");
+        printf("5. Back to main menu\n");
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice){
+            case 1 :
+        
+                break;
+            case 2:
+                
+                break;
+            case 3:
+                
+                break;
+            case 4:
+                
+                break;
+            case 5:
+            return;
+                break;
+            default:
+                printf("Invalid Input! Try again...");
+        }
+    } while(choice != 5);
 }
