@@ -16,7 +16,6 @@ int deliveryCount = 0;
 char cities[MAX_CITIES][MAX_NAME_LEN];
 int distances[MAX_CITIES][MAX_CITIES];
 int path[MAX_CITIES];
-int deliveryCount = 0;
 int deliverySouc[MAX_DELIVERIES];
 int deliveryDest[MAX_DELIVERIES];
 int deliveryWeight[MAX_DELIVERIES];
@@ -47,8 +46,8 @@ void findShortPath(int souc, int dest);
 void calcDeliveryCost(int souc, int dest, int weight, int vehicleType);
 void displayDeliveryEstimate(int souc, int dest, int weight, int vehicleType, float distance, float deliveryCost,
                              float fuelUsed, float fuelCost, float totalCost, float profit, float customerCharge, float time);
-void saveDeliveryRecord(int souc, int dest, int weight, int vehicleType, float distance, float delivCost, float time, float customerCharge, float profit)                             
-
+void saveDeliveryRecord(int souc, int dest, int weight, int vehicleType, float distance, float delivCost, float time, float customerCharge, float profit);                             
+void viewReports();
 
 
 int main(){
@@ -77,13 +76,13 @@ int main(){
                 manageDistance();
                 break;
             case 3:
-
+                handleDeliveryRequest();
                 break;
             case 4: 
-
+                viewReports();
                 break;
             case 5:
-                printf("Exiting System.Thank you!");
+                printf("Exiting... Thank you!");
                 break;
             default:
                 printf("Invalid choice! Please try again.\n");                
@@ -498,7 +497,7 @@ void calcDeliveryCost(int souc, int dest, int weight, int vehicleType){
 
     displayDeliveryEstimate(souc, dest, weight, vehicleType, distance, deliveryCost, fuelUsed, fuelCost, totalCost, profit, customerCharge, time);
 
-    // saveDeliveryRecord(souc, dest, weight, vehicleType, distance, deliveryCost, time, customerCharge, profit);
+    saveDeliveryRecord(souc, dest, weight, vehicleType, distance, deliveryCost, time, customerCharge, profit);
 }
 
 void displayDeliveryEstimate(int souc, int dest, int weight, int vehicleType, float distance, float deliveryCost,
@@ -540,3 +539,53 @@ void saveDeliveryRecord(int souc, int dest, int weight, int vehicleType, float d
     deliveryProfit[deliveryCount] = profit;
     deliveryCount++;
 }    
+
+void viewReports(){
+    float totalDist = 0;
+    float totalTime = 0;
+    float totalRevenue = 0;
+    float totalProfit = 0;
+    float maxDist = 0;
+    float minDist = INFINITY_VALUE;
+    int maxDistIndex = 0;
+    int minDistIndex = 0;
+
+    if(deliveryCount == 0){
+        printf("No deliveries completed yet.\n");
+        return;
+    }
+
+    for (int i = 0; i < deliveryCount; i++){
+        totalDist += deliveryDistance[i];
+        totalTime += deliveryTime[i];
+        totalRevenue += deliveryRevenue[i];
+        totalProfit += deliveryProfit[i];
+
+        if (deliveryDistance[i] > maxDist){
+            maxDist = deliveryDistance[i];
+            maxDistIndex = i;
+        }
+        if (deliveryDistance[i] < minDist)
+{
+            minDist = deliveryDistance[i];
+            minDistIndex = i;
+        }
+    }
+
+    float avgTime = totalTime / deliveryCount;
+
+    printf("\n======================================================\n");
+    printf("                  PERFORMANCE REPORTS                     ");
+    printf("\n======================================================\n");
+    printf("\n\n              SUMMARY STATISTICS");
+    printf("\n------------------------------------------------------\n");
+    printf("  Total Deliveries Completed: %d\n", deliveryCount);
+    printf("  Total Distance Covered: %.2f km\n", totalDist);
+    printf("  Average Delivery Time: %.2f hours\n", avgTime);
+    printf("  Total Revenue: %.2f LKR\n", totalRevenue);
+    printf("  Total Profit:%.2f LKR\n", totalProfit);
+    printf("\n                ROUTE STATISTICS");
+    printf("\n------------------------------------------------------\n");
+    printf("Longest Route: %s to %s => %.2f km\n", cities[deliverySouc[maxDistIndex]], cities[deliveryDest[maxDistIndex]], maxDist);
+    printf("Shortest Route: %s to %s =>  %.2f km\n", cities[deliverySouc[minDistIndex]], cities[deliveryDest[minDistIndex]], minDist);
+}
