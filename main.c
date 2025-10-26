@@ -48,6 +48,8 @@ void displayDeliveryEstimate(int souc, int dest, int weight, int vehicleType, fl
                              float fuelUsed, float fuelCost, float totalCost, float profit, float customerCharge, float time);
 void saveDeliveryRecord(int souc, int dest, int weight, int vehicleType, float distance, float delivCost, float time, float customerCharge, float profit);                             
 void viewReports();
+void loadFromFiles();
+void saveToFiles();
 
 
 int main(){
