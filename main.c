@@ -14,6 +14,7 @@ void manageCities();
 void addCity();
 void renameCity();
 void displayCities();
+void manageDistance();
 
 
 int main(){
@@ -227,5 +228,29 @@ int cityIndex;
     printf("City successfully deleted.\n");
 }
 
+void manageDistance(){
+    int choice;
+    do{
+        printf("\n--------- Distance Management ---------n");
+        printf("1. Input/Edit distance\n");
+        printf("2. Display Distance table\n");
+        printf("3. Back to main menu\n");
 
+        printf("\nEnter your choice: ");
+        scanf("%d", &choice);  
+
+        switch(choice){
+            case 1:
+                editDistance();
+                break;
+            case 2:
+
+                break;
+            case 3:
+                return;
+            default:
+                printf("Invalid choice.Try again!\n");            
+        }
+    } while(choice != 3);
+}
 
