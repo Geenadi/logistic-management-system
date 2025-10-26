@@ -6,15 +6,26 @@
 #define MAX_NAME_LEN 30
 #define INFINITY_VALUE 999999
 #define FUEL_PRICE 310.0
+#define MAX_DELIVERIES 50
 
 int cityCount = 0;
 int minDist = 0;
 int pathLen = 0;
+int deliveryCount = 0;
 
 char cities[MAX_CITIES][MAX_NAME_LEN];
 int distances[MAX_CITIES][MAX_CITIES];
 int path[MAX_CITIES];
-
+int deliveryCount = 0;
+int deliverySouc[MAX_DELIVERIES];
+int deliveryDest[MAX_DELIVERIES];
+int deliveryWeight[MAX_DELIVERIES];
+int deliveryVehicle[MAX_DELIVERIES];
+float deliveryDistance[MAX_DELIVERIES];
+float deliveryCost[MAX_DELIVERIES];
+float deliveryTime[MAX_DELIVERIES];
+float deliveryRevenue[MAX_DELIVERIES];
+float deliveryProfit[MAX_DELIVERIES];
 
 char vehicleNames[3][30] = {"Van", "Truck", "Lorry"};
 int vehicleCapacity[3] = {1000, 5000, 10000};
@@ -36,6 +47,7 @@ void findShortPath(int souc, int dest);
 void calcDeliveryCost(int souc, int dest, int weight, int vehicleType);
 void displayDeliveryEstimate(int souc, int dest, int weight, int vehicleType, float distance, float deliveryCost,
                              float fuelUsed, float fuelCost, float totalCost, float profit, float customerCharge, float time);
+void saveDeliveryRecord(int souc, int dest, int weight, int vehicleType, float distance, float delivCost, float time, float customerCharge, float profit)                             
 
 
 
@@ -266,7 +278,7 @@ void manageDistance(){
                 editDistance();
                 break;
             case 2:
-
+                displayDistanceTable();
                 break;
             case 3:
                 return;
@@ -510,3 +522,21 @@ void displayDeliveryEstimate(int souc, int dest, int weight, int vehicleType, fl
     printf("Estimated Time: %.2f hours\n", time);
     printf("======================================================\n");
 }
+
+void saveDeliveryRecord(int souc, int dest, int weight, int vehicleType, float distance, float delivCost, float time, float customerCharge, float profit){
+     if (deliveryCount >= MAX_DELIVERIES){
+        printf("Maximum delivery records reached.\n");
+        deliveryCount = MAX_DELIVERIES - 1;
+    }
+
+    deliverySouc[deliveryCount] = souc;
+    deliveryDest[deliveryCount] = dest;
+    deliveryWeight[deliveryCount] = weight;
+    deliveryVehicle[deliveryCount] = vehicleType;
+    deliveryDistance[deliveryCount] = distance;
+    deliveryCost[deliveryCount] = delivCost;
+    deliveryTime[deliveryCount] = time;
+    deliveryRevenue[deliveryCount] = customerCharge;
+    deliveryProfit[deliveryCount] = profit;
+    deliveryCount++;
+}    
