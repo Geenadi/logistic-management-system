@@ -11,6 +11,7 @@ char cities[MAX_CITIES][MAX_NAME_LEN];
 
 void manageCities();
 void addCity();
+void displayCities();
 
 
 int main(){
@@ -120,3 +121,21 @@ void addCity(){
         printf("'%s' successfully added.\n", newCity);
     }
 }
+
+void displayCities(){
+
+        if(cityCount == 0){
+        printf("No cities available\n");
+        return;
+    }
+
+    printf("\n-------------------------------");
+    printf("\n          City List            ");
+    printf("\n-------------------------------\n");
+
+    for(int i = 0; i < cityCount; i++){
+        printf("%d. %s\n", i+1, cities[i]);
+    }
+}
+
+
