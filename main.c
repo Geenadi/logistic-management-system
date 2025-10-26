@@ -22,6 +22,9 @@ void displayCities();
 void manageDistance();
 void editDistance();
 void displayDistanceTable();
+void displayVehicles();
+void handleDeliveryRequest();
+
 
 
 int main(){
@@ -238,7 +241,7 @@ int cityIndex;
 void manageDistance(){
     int choice;
     do{
-        printf("\n--------- Distance Management ---------n");
+        printf("\n--------- Distance Management ---------\n");
         printf("1. Input/Edit distance\n");
         printf("2. Display Distance table\n");
         printf("3. Back to main menu\n");
@@ -344,5 +347,55 @@ void displayVehicles(){
     for (int i = 0; i < 3; i++){
         printf(" %d. %-10s - Capacity: %5d kg, Rate: %.0f LKR/km\n", i + 1, vehicleNames[i], vehicleCapacity[i], vehicleRate[i]);
     }
-
 }
+
+void handleDeliveryRequest(){
+    int souc, dest, weight, vehicleType;
+
+    if (cityCount < 2){
+        printf("Need at least two cities to deliver.\n");
+        return;
+    }
+
+    displayCities();
+
+    printf("Enter source city number: ");
+    scanf("%d", &souc);
+    printf("Enter destination city number: ");
+    scanf("%d", &dest);
+
+    if(souc == dest){
+        printf("Source and the Destination cities can't be the same.\n");
+    }
+
+    souc--;
+    dest--;
+
+    printf("Enter weight in kg: ");
+    scanf("%d", &weight);
+
+    if(weight < 1 ){
+        printf("Invalid Input. Wieight can't be a negative value.\n");
+        return;
+    }
+
+    void displayVehicle();
+
+    printf("Enter a number to select a vehicle: ");
+    scanf("%d", &vehicleType);
+
+     if (vehicleType < 1 || vehicleType > 3){
+        printf("Invalid vehicle number. Enter again");
+        return;
+    }
+
+    vehicleType--;
+
+    if (weight > vehicleCapacity[vehicleType]){
+        printf("Weight exceeds vehicle capacity!\n");
+        printf("Maximum capacity for %s: %d kg\n", vehicleNames[vehicleType], vehicleCapacity[vehicleType]);
+        return;
+    }
+
+    //calcDeliveryCost(souc, dest, weight, vehicleType);
+}    
