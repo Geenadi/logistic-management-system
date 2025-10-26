@@ -10,6 +10,10 @@ int cityCount = 0;
 char cities[MAX_CITIES][MAX_NAME_LEN];
 int distances[MAX_CITIES][MAX_CITIES];
 
+char vehicleNames[3][30] = {"Van", "Truck", "Lorry"};
+int vehicleCapacity[3] = {1000, 5000, 10000};
+float vehicleRate[3] = {30.0, 40.0, 80.0};
+
 void manageCities();
 void addCity();
 void renameCity();
@@ -36,7 +40,7 @@ int main(){
         printf("5. Exit\n");
 
         printf("\nEnter your choice: ");
-        scanf("%d", choice);
+        scanf("%d", &choice);
 
         switch(choice){
             case 1: 
@@ -288,7 +292,7 @@ void editDistance(){
     city2--;
 
     printf("Please enter the distance between the selected cities in km: ");
-    scanf("%d", distance);
+    scanf("%d", &distance);
 
     if (distance < 0)
     {
@@ -331,6 +335,14 @@ void displayDistanceTable(){
                 printf("%-15d", distances[i][j]);
         }
         printf("\n");
+    }
+}
+
+void displayVehicles(){
+    printf("\n--------- Available Vehicles ---------n");
+
+    for (int i = 0; i < 3; i++){
+        printf(" %d. %-10s - Capacity: %5d kg, Rate: %.0f LKR/km\n", i + 1, vehicleNames[i], vehicleCapacity[i], vehicleRate[i]);
     }
 
 }
