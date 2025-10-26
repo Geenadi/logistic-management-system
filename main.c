@@ -34,6 +34,8 @@ void displayVehicles();
 void handleDeliveryRequest();
 void findShortPath(int souc, int dest);
 void calcDeliveryCost(int souc, int dest, int weight, int vehicleType);
+void displayDeliveryEstimate(int souc, int dest, int weight, int vehicleType, float distance, float deliveryCost,
+                             float fuelUsed, float fuelCost, float totalCost, float profit, float customerCharge, float time);
 
 
 
@@ -482,7 +484,29 @@ void calcDeliveryCost(int souc, int dest, int weight, int vehicleType){
     float customerCharge = totalCost + profit;
     float time = distance / speed;
 
-    // displayDeliveryEstimate(souc, dest, weight, vehicleType, distance, deliveryCost, fuelUsed, fuelCost, totalCost, profit, customerCharge, time);
+    displayDeliveryEstimate(souc, dest, weight, vehicleType, distance, deliveryCost, fuelUsed, fuelCost, totalCost, profit, customerCharge, time);
 
     // saveDeliveryRecord(souc, dest, weight, vehicleType, distance, deliveryCost, time, customerCharge, profit);
+}
+
+void displayDeliveryEstimate(int souc, int dest, int weight, int vehicleType, float distance, float deliveryCost,
+                             float fuelUsed, float fuelCost, float totalCost, float profit, float customerCharge, float time)
+{
+    printf("\n======================================================\n");
+    printf("DELIVERY COST ESTIMATION\n");
+    printf("------------------------------------------------------\n");
+    printf(" From: %s\n", cities[souc]);
+    printf(" To: %s\n", cities[dest]);
+    printf(" Minimum Distance: %.0f km\n", distance);
+    printf(" Vehicle: %s\n", vehicleNames[vehicleType]);
+    printf(" Weight: %d kg\n", weight);
+    printf("------------------------------------------------------\n");
+    printf(" Base Cost: %.2f x %.0f x (1 + %d/10000.0) = %.2f LKR\n", distance, vehicleRate[vehicleType], weight, deliveryCost);
+    printf(" Fuel Used: %.2f L\n", fuelUsed);
+    printf("Fuel Cost: %.2f LKR\n", fuelCost);
+    printf("Operational Cost: %.2f LKR\n", totalCost);
+    printf("Profit: %.2f LKR\n", profit);
+    printf("Customer Charge: %.2f LKR\n", customerCharge);
+    printf("Estimated Time: %.2f hours\n", time);
+    printf("======================================================\n");
 }
