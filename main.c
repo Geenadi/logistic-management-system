@@ -11,6 +11,7 @@ char cities[MAX_CITIES][MAX_NAME_LEN];
 
 void manageCities();
 void addCity();
+void renameCity();
 void displayCities();
 
 
@@ -137,5 +138,51 @@ void displayCities(){
         printf("%d. %s\n", i+1, cities[i]);
     }
 }
+
+void renameCity(){
+    int cityIndex;
+    int isDuplicated = 0;
+
+    if(cityCount == 0){
+        printf("No cities has enterd to rename.\n");
+        return;
+    }
+
+    displayCities();
+
+    printf("Enter the number of a city to rename: ");
+    scanf("%d", &cityIndex);
+    getchar();
+
+    if(cityIndex < 1 || cityIndex > cityCount){
+        printf("Invalid Input. Please enter a valid city number!\n");
+        return;
+    }
+
+    cityIndex--;
+
+    char newName[MAX_NAME_LEN];
+
+    printf("Enter a new name: ");
+    scanf("%s", newName);
+
+    for(int i = 0; i < cityCount; i++){
+        if(strcasecmp(cities[i], newName) == 0) {
+            isDuplicated = 1;
+            break;
+        }
+    }
+
+    if(isDuplicated){
+        printf("City name already exists. Please try a different name...\n");
+        return;
+    }
+
+    strcpy(cities[cityIndex], newName);
+    printf("City successfully renamed.\n");
+
+    displayCities();
+}
+
 
 
