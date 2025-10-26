@@ -359,16 +359,21 @@ void displayDistanceTable(){
     for (int i = 0; i < cityCount; i++) {
         printf("%-15s", cities[i]);
         for (int j = 0; j < cityCount; j++) {
-            printf("%-15s", (i != j && distances[i][j] == 0) ? "-" : (char[16]){0});
-            if (!(i != j && distances[i][j] == 0))
-                printf("%-15d", distances[i][j]);
+            if (i == j) {
+            printf("%-15s", "-");
+        } 
+        else if (distances[i][j] == 0) {
+            printf("%-15s", "N/A");
+        } else {
+            printf("%-15d", distances[i][j]);
         }
+    }
         printf("\n");
     }
 }
 
 void displayVehicles(){
-    printf("\n--------- Available Vehicles ---------n");
+    printf("\n--------- Available Vehicles ---------\n");
 
     for (int i = 0; i < 3; i++){
         printf(" %d. %-10s - Capacity: %5d kg, Rate: %.0f LKR/km\n", i + 1, vehicleNames[i], vehicleCapacity[i], vehicleRate[i]);
@@ -405,7 +410,7 @@ void handleDeliveryRequest(){
         return;
     }
 
-    void displayVehicle();
+    displayVehicles();
 
     printf("Enter a number to select a vehicle: ");
     scanf("%d", &vehicleType);
@@ -531,6 +536,7 @@ void saveDeliveryRecord(int souc, int dest, int weight, int vehicleType, float d
      if (deliveryCount >= MAX_DELIVERIES){
         printf("Maximum delivery records reached.\n");
         deliveryCount = MAX_DELIVERIES - 1;
+        return;
     }
 
     deliverySouc[deliveryCount] = souc;
