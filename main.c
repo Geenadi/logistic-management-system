@@ -54,8 +54,10 @@ int main(){
     int choice;
 
     printf("=============================================\n");
-    printf("         LOGISTICS MANAGEMENT SYSTEM         \n");
+    printf("|        LOGISTICS MANAGEMENT SYSTEM        |\n");
     printf("=============================================\n");
+
+    loadFromFiles();
     
     do{
         printf("\n--------- MAIN MENU ---------\n");
@@ -88,6 +90,9 @@ int main(){
                 printf("Invalid choice! Please try again.\n");                
         }
     }while (choice != 5);
+
+    saveToFiles();
+    printf("All data saved successfully.\n");
  
     return 0;
 
@@ -588,4 +593,80 @@ void viewReports(){
     printf("\n------------------------------------------------------\n");
     printf("Longest Route: %s to %s => %.2f km\n", cities[deliverySouc[maxDistIndex]], cities[deliveryDest[maxDistIndex]], maxDist);
     printf("Shortest Route: %s to %s =>  %.2f km\n", cities[deliverySouc[minDistIndex]], cities[deliveryDest[minDistIndex]], minDist);
+    printf("--------------------------------------------------------\n");
+}
+
+void loadFromFiles() {
+    FILE *routesFile = fopen("routes.txt", "r");
+    if (routesFile != NULL) {
+        fscanf(routesFile, "%d", &cityCount);
+        for (int i = 0; i < cityCount; i++) {
+            fscanf(routesFile, " %[^\n]", cities[i]);
+        }
+
+        for (int i = 0; i < cityCount; i++) {
+            for (int j = 0; j < cityCount; j++) {
+                fscanf(routesFile, "%d", &distances[i][j]);
+            }
+        }
+        fclose(routesFile);
+        printf("Routes data loaded successfully!\n");
+    }
+
+    FILE *deliveriesFile = fopen("deliveries.txt", "r");
+    if (deliveriesFile != NULL) {
+        fscanf(deliveriesFile, "%d", &deliveryCount);
+        for (int i = 0; i < deliveryCount; i++) {
+            fscanf(deliveriesFile, "%d %d %d %d %f %f %f %f %f",
+                   &deliverySouc[i],
+                   &deliveryDest[i],
+                   &deliveryWeight[i],
+                   &deliveryVehicle[i],
+                   &deliveryDistance[i],
+                   &deliveryCost[i],
+                   &deliveryTime[i],
+                   &deliveryRevenue[i],
+                   &deliveryProfit[i]);
+        }
+
+        fclose(deliveriesFile);
+        printf("Delivery records loaded successfully!\n");
+    }
+}
+
+void saveToFiles() {
+    FILE *routesFile = fopen("routes.txt", "w");
+    if (routesFile != NULL) {
+        fprintf(routesFile, "%d\n", cityCount);
+        for (int i = 0; i < cityCount; i++) {
+            fprintf(routesFile, "%s\n", cities[i]);
+        }
+
+        for (int i = 0; i < cityCount; i++) {
+            for (int j = 0; j < cityCount; j++) {
+                fprintf(routesFile, "%d ", distances[i][j]);
+            }
+            fprintf(routesFile, "\n");
+        }
+
+        fclose(routesFile);
+    }
+
+    FILE *deliveriesFile = fopen("deliveries.txt", "w");
+    if (deliveriesFile != NULL) {
+        fprintf(deliveriesFile, "%d\n", deliveryCount);
+        for (int i = 0; i < deliveryCount; i++) {
+            fprintf(deliveriesFile, "%d %d %d %d %.2f %.2f %.2f %.2f %.2f\n",
+                    deliverySouc[i],
+                    deliveryDest[i],
+                    deliveryWeight[i],
+                    deliveryVehicle[i],
+                    deliveryDistance[i],
+                    deliveryCost[i],
+                    deliveryTime[i],
+                    deliveryRevenue[i],
+                    deliveryProfit[i]);
+        }
+        fclose(deliveriesFile);
+    }
 }
