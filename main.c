@@ -5,6 +5,7 @@
 #define MAX_CITIES 30
 #define MAX_NAME_LEN 30
 #define INFINITY_VALUE 999999
+#define FUEL_PRICE 310.0
 
 int cityCount = 0;
 int minDist = 0;
@@ -18,6 +19,8 @@ int path[MAX_CITIES];
 char vehicleNames[3][30] = {"Van", "Truck", "Lorry"};
 int vehicleCapacity[3] = {1000, 5000, 10000};
 float vehicleRate[3] = {30.0, 40.0, 80.0};
+float vehicleSpeed[3] = {60.0, 50.0, 45.0};
+float vehicleFuelEfficiency[3] = {12.0, 6.0, 4.0};
 
 void manageCities();
 void addCity();
@@ -30,6 +33,7 @@ void displayDistanceTable();
 void displayVehicles();
 void handleDeliveryRequest();
 void findShortPath(int souc, int dest);
+void calcDeliveryCost(int souc, int dest, int weight, int vehicleType);
 
 
 
@@ -285,14 +289,12 @@ void editDistance(){
     printf("Enter second city number: ");
     scanf("%d", &city2);
 
-    if (city1 < 1 || city1 > cityCount || city2 < 1 || city2 > cityCount)
-    {
+    if (city1 < 1 || city1 > cityCount || city2 < 1 || city2 > cityCount){
         printf("Invalid city numbers.\n");
         return;
     }
 
-    if (city1 == city2)
-    {
+    if (city1 == city2){
         printf("Cannot set distance from city to itself.\n");
         return;
     }
@@ -403,7 +405,7 @@ void handleDeliveryRequest(){
         return;
     }
 
-    // calcDeliveryCost(souc, dest, weight, vehicleType);
+    calcDeliveryCost(souc, dest, weight, vehicleType);
 }    
 
 void findShortPath(int souc, int dest){
@@ -456,4 +458,31 @@ void findShortPath(int souc, int dest){
             }
         }
     }
+}
+
+void calcDeliveryCost(int souc, int dest, int weight, int vehicleType){
+
+    findShortPath(souc, dest);
+
+    if (minDist == 0 || minDist == INFINITY_VALUE){
+        printf("No route available between selected cities!\n");
+        return;
+    }
+
+    float distance = (float)minDist;
+    float rate = vehicleRate[vehicleType];
+    float speed = vehicleSpeed[vehicleType];
+    float efficiency = vehicleFuelEfficiency[vehicleType];
+
+    float deliveryCost = distance * rate * (1.0 + (weight / 10000.0));
+    float fuelUsed = distance / efficiency;
+    float fuelCost = fuelUsed * FUEL_PRICE;
+    float totalCost = deliveryCost + fuelCost;
+    float profit = deliveryCost * 0.25;
+    float customerCharge = totalCost + profit;
+    float time = distance / speed;
+
+    // displayDeliveryEstimate(souc, dest, weight, vehicleType, distance, deliveryCost, fuelUsed, fuelCost, totalCost, profit, customerCharge, time);
+
+    // saveDeliveryRecord(souc, dest, weight, vehicleType, distance, deliveryCost, time, customerCharge, profit);
 }
