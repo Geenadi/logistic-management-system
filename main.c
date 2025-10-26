@@ -265,6 +265,7 @@ int cityIndex;
 
     cityCount--;
 
+    displayCities();
     printf("City successfully deleted.\n");
 }
 
