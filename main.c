@@ -13,9 +13,11 @@ int distances[MAX_CITIES][MAX_CITIES];
 void manageCities();
 void addCity();
 void renameCity();
+void removeCity();
 void displayCities();
 void manageDistance();
 void editDistance();
+void displayDistanceTable();
 
 
 int main(){
@@ -26,7 +28,7 @@ int main(){
     printf("=============================================\n");
     
     do{
-        printf("\n--------- MAIN MENU ---------n");
+        printf("\n--------- MAIN MENU ---------\n");
         printf("1. City Management\n");
         printf("2. Distance Management\n");
         printf("3. Delivery Request\n");
@@ -41,7 +43,7 @@ int main(){
                 manageCities();
                 break;
             case 2:
-                
+                manageDistance();
                 break;
             case 3:
 
@@ -65,7 +67,7 @@ void manageCities(){
     int choice;
     do{
 
-        printf("\n--------- City Management ---------\n");
+        printf("\n--------- City Management --------\n");
         printf("1. Add a new city\n");
         printf("2. Rename a city\n");
         printf("3. Remove a city\n");
@@ -76,16 +78,16 @@ void manageCities(){
 
         switch(choice){
             case 1 :
-        
+                addCity();
                 break;
             case 2:
-                
+                renameCity();
                 break;
             case 3:
-                
+                removeCity();
                 break;
             case 4:
-                
+                displayCities();
                 break;
             case 5:
             return;
@@ -265,9 +267,9 @@ void editDistance(){
 
     displayCities();
 
-    prinf("Enter first city number: ");
+    printf("Enter first city number: ");
     scanf("%d", &city1);
-    prinf("Enter second city number: ");
+    printf("Enter second city number: ");
     scanf("%d", &city2);
 
     if (city1 < 1 || city1 > cityCount || city2 < 1 || city2 > cityCount)
@@ -299,5 +301,36 @@ void editDistance(){
 
     printf("Distance set successfully.\n");
 
+
+}
+
+void displayDistanceTable(){
+    if (cityCount == 0){
+        printf("No cities available to display distances.\n");
+        return;
+    }
+
+    printf("\n---------------------------------------\n");
+    printf("          Distances between two cities     \n");
+    printf("\n---------------------------------------\n");
+
+    printf("\n%-15s", " ");
+
+    for (int i = 0; i < cityCount; i++){
+        printf("%-15s", cities[i]);
+    }
+
+    printf("\n");
+    printf("------------------------------------------------------------\n");
+
+    for (int i = 0; i < cityCount; i++) {
+        printf("%-15s", cities[i]);
+        for (int j = 0; j < cityCount; j++) {
+            printf("%-15s", (i != j && distances[i][j] == 0) ? "-" : (char[16]){0});
+            if (!(i != j && distances[i][j] == 0))
+                printf("%-15d", distances[i][j]);
+        }
+        printf("\n");
+    }
 
 }
